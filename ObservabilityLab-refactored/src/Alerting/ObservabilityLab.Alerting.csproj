@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
 		<TargetFramework>net9.0</TargetFramework>
@@ -16,12 +16,7 @@
 
 	<ItemGroup>
 
-		<PackageReference Include="OpenTelemetry"
-						  Version="1.13.1" />
-
-	</ItemGroup>
-
-	<ItemGroup>
+		<ProjectReference Include="..\BuildingBlocks\ObservabilityLab.BuildingBlocks.csproj" />
 
 		<ProjectReference Include="..\Domain\ObservabilityLab.Domain.csproj" />
 

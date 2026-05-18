@@ -1,5 +1,5 @@
 using ObservabilityLab.Observability.Metrics;
-
+using ObservabilityLab.Observability.Dashboard;
 namespace ObservabilityLab.Api.Middleware;
 
 /// <summary>

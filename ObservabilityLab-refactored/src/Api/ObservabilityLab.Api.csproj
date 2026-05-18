@@ -4,11 +4,9 @@
 		<TargetFramework>net9.0</TargetFramework>
 
 		<Nullable>enable</Nullable>
-
 		<ImplicitUsings>enable</ImplicitUsings>
 
 		<RootNamespace>ObservabilityLab.Api</RootNamespace>
-
 		<AssemblyName>ObservabilityLab.Api</AssemblyName>
 
 		<AllowUnsafeBlocks>false</AllowUnsafeBlocks>
@@ -16,141 +14,24 @@
 		<Optimize>true</Optimize>
 
 		<TieredCompilation>true</TieredCompilation>
-
 		<TieredPGO>true</TieredPGO>
 	</PropertyGroup>
 
 	<!-- ===================================================== -->
-	<!-- DATABASE / CACHE -->
+	<!-- API ONLY -->
 	<!-- ===================================================== -->
 
 	<ItemGroup>
 
-		<PackageReference Include="Microsoft.EntityFrameworkCore"
-						  Version="9.0.0" />
+		<!-- Swagger -->
+		<PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.8" />
+
+		<PackageReference Include="Swashbuckle.AspNetCore" Version="7.2.0" />
 
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Design"
-						  Version="9.0.0"
-						  PrivateAssets="all" />
-
-		<PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL"
-						  Version="9.0.0" />
-
-		<PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis"
-						  Version="9.0.0" />
-
-	</ItemGroup>
-
-	<!-- ===================================================== -->
-	<!-- OPENTELEMETRY -->
-	<!-- ===================================================== -->
-
-	<!-- ===================================================== -->
-	<!-- OPENTELEMETRY -->
-	<!-- ===================================================== -->
-
-	<ItemGroup>
-
-		<PackageReference Include="OpenTelemetry"
-						  Version="1.14.0" />
-
-		<PackageReference Include="OpenTelemetry.Extensions.Hosting"
-						  Version="1.14.0" />
-
-		<!-- Exporters -->
-
-		<PackageReference Include="OpenTelemetry.Exporter.Console"
-						  Version="1.14.0" />
-
-		<PackageReference Include="OpenTelemetry.Exporter.OpenTelemetryProtocol"
-						  Version="1.14.0" />
-
-		<PackageReference Include="OpenTelemetry.Exporter.Prometheus.AspNetCore"
-						  Version="1.14.0-beta.1" />
-
-		<!-- Instrumentations -->
-
-		<PackageReference Include="OpenTelemetry.Instrumentation.AspNetCore"
-						  Version="1.14.0" />
-
-		<PackageReference Include="OpenTelemetry.Instrumentation.Http"
-						  Version="1.14.0" />
-
-		<PackageReference Include="OpenTelemetry.Instrumentation.Runtime"
-						  Version="1.14.0" />
-
-		<PackageReference Include="OpenTelemetry.Instrumentation.Process"
-						  Version="1.14.0-beta.1" />
-
-		<PackageReference Include="OpenTelemetry.Instrumentation.EntityFrameworkCore"
-						  Version="1.14.0-beta.1" />
-
-		<PackageReference Include="OpenTelemetry.Instrumentation.StackExchangeRedis"
-						  Version="1.14.0-beta.1" />
-
-	</ItemGroup>
-	<!-- ===================================================== -->
-	<!-- LOGGING -->
-	<!-- ===================================================== -->
-
-	<ItemGroup>
-
-		<PackageReference Include="Serilog.AspNetCore"
-						  Version="9.0.0" />
-
-		<PackageReference Include="Serilog.Enrichers.Environment"
-						  Version="3.0.1" />
-
-		<PackageReference Include="Serilog.Enrichers.Span"
-						  Version="3.1.0" />
-
-		<PackageReference Include="Serilog.Sinks.Console"
-						  Version="6.0.0" />
-
-		<PackageReference Include="Serilog.Sinks.File"
-						  Version="7.0.0" />
-
-		<PackageReference Include="Serilog.Sinks.Seq"
-						  Version="9.0.0" />
-
-	</ItemGroup>
-
-	<!-- ===================================================== -->
-	<!-- HEALTH CHECKS -->
-	<!-- ===================================================== -->
-
-	<ItemGroup>
-
-		<PackageReference Include="AspNetCore.HealthChecks.NpgSql"
-						  Version="9.0.0" />
-
-		<PackageReference Include="AspNetCore.HealthChecks.Redis"
-						  Version="9.0.0" />
-
-	</ItemGroup>
-
-	<!-- ===================================================== -->
-	<!-- RESILIENCE -->
-	<!-- ===================================================== -->
-
-	<ItemGroup>
-
-		<PackageReference Include="Microsoft.Extensions.Http.Resilience"
-						  Version="9.0.0" />
-
-	</ItemGroup>
-
-	<!-- ===================================================== -->
-	<!-- OPENAPI -->
-	<!-- ===================================================== -->
-
-	<ItemGroup>
-
-		<PackageReference Include="Microsoft.AspNetCore.OpenApi"
-						  Version="9.0.0" />
-
-		<PackageReference Include="Swashbuckle.AspNetCore"
-						  Version="7.2.0" />
+                  Version="9.0.16">
+			<PrivateAssets>all</PrivateAssets>
+		</PackageReference>
 
 	</ItemGroup>
 
@@ -160,9 +41,15 @@
 
 	<ItemGroup>
 
+		<ProjectReference Include="..\BuildingBlocks\ObservabilityLab.BuildingBlocks.csproj" />
+
+		<ProjectReference Include="..\Domain\ObservabilityLab.Domain.csproj" />
+
 		<ProjectReference Include="..\Application\ObservabilityLab.Application.csproj" />
 
 		<ProjectReference Include="..\Infrastructure\ObservabilityLab.Infrastructure.csproj" />
+
+		<ProjectReference Include="..\Observability\ObservabilityLab.Observability.csproj" />
 
 		<ProjectReference Include="..\Alerting\ObservabilityLab.Alerting.csproj" />
 

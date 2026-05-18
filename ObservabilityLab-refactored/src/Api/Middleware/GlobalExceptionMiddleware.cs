@@ -3,6 +3,8 @@ using System.Net;
 using System.Text.Json;
 using Microsoft.Extensions.Logging;
 using ObservabilityLab.Observability.Metrics;
+using ObservabilityLab.Observability.Dashboard;
+
 
 namespace ObservabilityLab.Api.Middleware;
 
@@ -35,7 +37,19 @@ public sealed class GlobalExceptionMiddleware(
         var traceId       = AppDiagnostics.GetTraceId();
 
         Activity.Current?.SetStatus(ActivityStatusCode.Error, ex.Message);
-        Activity.Current?.RecordException(ex);
+      
+
+        Activity.Current?.SetTag(
+            "exception.type",
+            ex.GetType().FullName);
+
+        Activity.Current?.SetTag(
+            "exception.message",
+            ex.Message);
+
+        Activity.Current?.SetTag(
+            "exception.stacktrace",
+            ex.StackTrace);
 
         var (statusCode, title) = ex switch
         {
