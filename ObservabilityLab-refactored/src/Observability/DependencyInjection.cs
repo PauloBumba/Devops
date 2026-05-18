@@ -3,6 +3,7 @@ using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
 using ObservabilityLab.Observability.Metrics;
+using ObservabilityLab.Observability.Dashboard;
 
 namespace ObservabilityLab.Observability;
 
@@ -39,11 +40,8 @@ public static class DependencyInjection
                     opts.Filter = ctx => !ctx.Request.Path.StartsWithSegments("/health")
                                      && !ctx.Request.Path.StartsWithSegments("/metrics");
                 })
-                .AddEntityFrameworkCoreInstrumentation(opts =>
-                {
-                    opts.SetDbStatementForText = true;
-                    opts.SetDbStatementForStoredProcedure = true;
-                })
+                .AddEntityFrameworkCoreInstrumentation(
+                )
                 .AddRedisInstrumentation()
                 .AddHttpClientInstrumentation()
                 .AddSource(AppDiagnostics.ActivitySourceName)

@@ -14,7 +14,7 @@ using ObservabilityLab.Infrastructure.Integrations.WhatsApp.EvolutionApi.Handler
 using ObservabilityLab.Infrastructure.Integrations.WhatsApp.EvolutionApi.Options;
 using ObservabilityLab.Infrastructure.Integrations.WhatsApp.EvolutionApi.Services;
 using ObservabilityLab.Infrastructure.Services;
-
+using Microsoft.Extensions.Http.Resilience;
 namespace ObservabilityLab.Infrastructure;
 
 /// <summary>
@@ -97,7 +97,7 @@ public static class DependencyInjection
                 client.DefaultRequestHeaders.Add("Accept", "application/json");
                 client.Timeout = Timeout.InfiniteTimeSpan;
             })
-            .AddEvolutionApiResilience(opts);
+            .AddStandardResilienceHandler();
 
         // Serviços internos da Evolution API
         services.AddScoped<EvolutionApiMessageService>();
@@ -111,8 +111,11 @@ public static class DependencyInjection
         services.AddScoped<IWhatsAppInstanceService, WhatsAppInstanceServiceAdapter>();
 
         // HTTP clients para alertas com resiliência
-        services.AddHttpClient("telegram").AddDefaultResilience();
-        services.AddHttpClient("whatsapp").AddDefaultResilience();
+        services.AddHttpClient("telegram")
+    .AddStandardResilienceHandler();
+
+        services.AddHttpClient("whatsapp")
+            .AddStandardResilienceHandler();
 
         return services;
     }

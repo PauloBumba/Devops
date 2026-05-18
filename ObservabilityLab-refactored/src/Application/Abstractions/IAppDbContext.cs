@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
-using ObservabilityLab.
+using ObservabilityLab.Domain;
+using ObservabilityLab.Domain.Entities;
 
 namespace ObservabilityLab.Application.Abstractions;
 

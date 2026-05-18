@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.Text.Json;
 using Microsoft.Extensions.Logging;
 using ObservabilityLab.Infrastructure.Integrations.WhatsApp.EvolutionApi.Models;

@@ -1,5 +1,5 @@
 using System.Diagnostics;
-
+using OpenTelemetry.Trace;
 namespace ObservabilityLab.Observability.Metrics;
 
 /// <summary>

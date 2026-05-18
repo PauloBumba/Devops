@@ -1,6 +1,8 @@
 using System.Diagnostics;
 using System.Text.Json;
+using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Logging;
 using ObservabilityLab.Observability.Metrics;
 
 namespace ObservabilityLab.Infrastructure.Cache;

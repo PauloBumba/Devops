@@ -51,12 +51,14 @@ public sealed class TelegramAlertChannel(
         var emoji = alert.Severity switch
         {
             AlertSeverity.Critical => "🔴",
-            AlertSeverity.Warning  => "🟡",
-            _                     => "🟢"
+            AlertSeverity.Warning => "🟡",
+            _ => "🟢"
         };
-        return $"{emoji} *{alert.Severity.ToString().ToUpper()}* — {alert.Title}\n\n" +
-               $"{alert.Message}\n\n" +
-               $"📍 Source: `{alert.Source}`\n" +
-               $"🕐 {alert.OccurredAt:yyyy-MM-dd HH:mm:ss} UTC";
+
+        return
+            $"{emoji} <b>{alert.Severity.ToString().ToUpper()}</b> — {alert.Title}\n\n" +
+            $"{alert.Message}\n\n" +
+            $"📍 <b>Source:</b> <code>{alert.Source}</code>\n" +
+            $"🕐 {alert.OccurredAt:yyyy-MM-dd HH:mm:ss} UTC";
     }
 }

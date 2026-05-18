@@ -2,8 +2,11 @@
 
 	<PropertyGroup>
 		<TargetFramework>net9.0</TargetFramework>
+
 		<Nullable>enable</Nullable>
+
 		<ImplicitUsings>enable</ImplicitUsings>
+
 		<RootNamespace>ObservabilityLab.Alerting</RootNamespace>
 	</PropertyGroup>
 
@@ -12,8 +15,18 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="OpenTelemetry" Version="1.*" />
+
+		<PackageReference Include="OpenTelemetry"
+						  Version="1.13.1" />
+
+	</ItemGroup>
+
+	<ItemGroup>
+
+		<ProjectReference Include="..\Domain\ObservabilityLab.Domain.csproj" />
+
 		<ProjectReference Include="..\Observability\ObservabilityLab.Observability.csproj" />
+
 	</ItemGroup>
 
 </Project>
