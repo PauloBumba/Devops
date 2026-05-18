@@ -3,11 +3,13 @@ FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 WORKDIR /src
 
 # Copy solution and project files first (layer caching)
-COPY ["src/Api/ObservabilityLab.Api.csproj",             "src/Api/"]
-COPY ["src/Application/ObservabilityLab.Application.csproj", "src/Application/"]
-COPY ["src/Infrastructure/ObservabilityLab.Infrastructure.csproj", "src/Infrastructure/"]
-COPY ["src/Observability/ObservabilityLab.Observability.csproj",   "src/Observability/"]
-COPY ["src/Alerting/ObservabilityLab.Alerting.csproj",   "src/Alerting/"]
+COPY ["src/Api/ObservabilityLab.Api.csproj",                     "src/Api/"]
+COPY ["src/Application/ObservabilityLab.Application.csproj",     "src/Application/"]
+COPY ["src/Infrastructure/ObservabilityLab.Infrastructure.csproj","src/Infrastructure/"]
+COPY ["src/Observability/ObservabilityLab.Observability.csproj",  "src/Observability/"]
+COPY ["src/Alerting/ObservabilityLab.Alerting.csproj",           "src/Alerting/"]
+COPY ["src/BuildingBlocks/ObservabilityLab.BuildingBlocks.csproj","src/BuildingBlocks/"]
+COPY ["src/Domain/ObservabilityLab.Domain.csproj",               "src/Domain/"]
 
 RUN dotnet restore "src/Api/ObservabilityLab.Api.csproj"
 

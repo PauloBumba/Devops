@@ -4,7 +4,6 @@
 		<TargetFramework>net9.0</TargetFramework>
 
 		<Nullable>enable</Nullable>
-
 		<ImplicitUsings>enable</ImplicitUsings>
 
 		<RootNamespace>ObservabilityLab.Observability</RootNamespace>
@@ -16,41 +15,52 @@
 
 	<ItemGroup>
 
-		<!-- Core -->
-		<PackageReference Include="OpenTelemetry"
-						  Version="1.13.1" />
+		<!-- ===================================================== -->
+		<!-- OpenTelemetry Core -->
+		<!-- ===================================================== -->
 
-		<PackageReference Include="OpenTelemetry.Extensions.Hosting"
-						  Version="1.13.1" />
+		<PackageReference Include="OpenTelemetry" Version="1.14.0" />
 
+		<PackageReference Include="OpenTelemetry.Extensions.Hosting" Version="1.14.0" />
+
+		<!-- ===================================================== -->
 		<!-- Exporters -->
-		<PackageReference Include="OpenTelemetry.Exporter.Console"
-						  Version="1.13.1" />
+		<!-- ===================================================== -->
 
-		<PackageReference Include="OpenTelemetry.Exporter.OpenTelemetryProtocol"
-						  Version="1.13.1" />
+		<PackageReference Include="OpenTelemetry.Exporter.Console" Version="1.14.0" />
+
+		<PackageReference Include="OpenTelemetry.Exporter.OpenTelemetryProtocol" Version="1.14.0" />
 
 		<PackageReference Include="OpenTelemetry.Exporter.Prometheus.AspNetCore"
-						  Version="1.13.1-beta.1" />
+						  Version="1.14.0-beta.1" />
 
+		<!-- ===================================================== -->
 		<!-- Instrumentation -->
+		<!-- ===================================================== -->
+
 		<PackageReference Include="OpenTelemetry.Instrumentation.AspNetCore"
-						  Version="1.13.1" />
+						  Version="1.14.0" />
 
 		<PackageReference Include="OpenTelemetry.Instrumentation.Http"
-						  Version="1.13.1" />
+						  Version="1.14.0" />
 
 		<PackageReference Include="OpenTelemetry.Instrumentation.Runtime"
-						  Version="1.13.1" />
+						  Version="1.14.0" />
 
 		<PackageReference Include="OpenTelemetry.Instrumentation.Process"
-						  Version="1.13.1-beta.1" />
+						  Version="1.14.0-beta.1" />
 
 		<PackageReference Include="OpenTelemetry.Instrumentation.EntityFrameworkCore"
-						  Version="1.13.1-beta.1" />
+						  Version="1.14.0-beta.1" />
 
 		<PackageReference Include="OpenTelemetry.Instrumentation.StackExchangeRedis"
-						  Version="1.13.1-rc.1" />
+						  Version="1.14.0-beta.1" />
+
+	</ItemGroup>
+
+	<ItemGroup>
+
+		<ProjectReference Include="..\BuildingBlocks\ObservabilityLab.BuildingBlocks.csproj" />
 
 	</ItemGroup>
 

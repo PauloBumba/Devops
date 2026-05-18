@@ -9,6 +9,9 @@
   <Folder Name="/src/Application/">
     <Project Path="src/Application/ObservabilityLab.Application.csproj" />
   </Folder>
+  <Folder Name="/src/BuildingBlocks/">
+    <Project Path="src/BuildingBlocks/ObservabilityLab.BuildingBlocks.csproj" />
+  </Folder>
   <Folder Name="/src/Domain/">
     <Project Path="src/Domain/ObservabilityLab.Domain.csproj" />
   </Folder>
