@@ -1,0 +1,160 @@
+# docker/alerts.yml
+# Prometheus alerting rules para o Observability Lab
+# Referenciado em prometheus.yml via rule_files
+
+groups:
+
+  # ── API Performance ──────────────────────────────────────────────────────────
+  - name: api.performance
+    interval: 15s
+    rules:
+
+      - alert: HighErrorRate
+        expr: |
+          (
+            rate(app_errors_total[2m])
+            /
+            rate(app_requests_total[2m])
+          ) * 100 > 5
+        for: 1m
+        labels:
+          severity: critical
+          team:     backend
+        annotations:
+          summary:     "High error rate on {{ $labels.http_route }}"
+          description: >
+            Error rate is {{ $value | printf "%.2f" }}%
+            on {{ $labels.http_method }} {{ $labels.http_route }}.
+            Threshold is 5%.
+          runbook: "https://wiki.internal/runbooks/high-error-rate"
+
+      - alert: HighP95Latency
+        expr: |
+          histogram_quantile(0.95,
+            rate(app_request_duration_bucket[5m])
+          ) > 2000
+        for: 2m
+        labels:
+          severity: warning
+          team:     backend
+        annotations:
+          summary:     "P95 latency above 2s on {{ $labels.http_route }}"
+          description: >
+            P95 latency is {{ $value | printf "%.0f" }}ms
+            on {{ $labels.http_route }}. Investigate slow queries or N+1.
+
+      - alert: P99LatencyCritical
+        expr: |
+          histogram_quantile(0.99,
+            rate(app_request_duration_bucket[5m])
+          ) > 5000
+        for: 1m
+        labels:
+          severity: critical
+          team:     backend
+        annotations:
+          summary:     "P99 latency above 5s"
+          description: "P99 is {{ $value | printf \"%.0f\" }}ms. Possible deadlock or resource exhaustion."
+
+      - alert: HighConcurrentUsers
+        expr: app_requests_active > 300
+        for: 30s
+        labels:
+          severity: warning
+        annotations:
+          summary:     "{{ $value | printf \"%.0f\" }} concurrent requests"
+          description: "High concurrency may saturate the thread pool. Check /dashboard/threads."
+
+      - alert: NoRequestsReceived
+        expr: rate(app_requests_total[2m]) == 0
+        for: 3m
+        labels:
+          severity: critical
+          team:     on-call
+        annotations:
+          summary:     "API receiving zero requests"
+          description: "No requests for 3 minutes. API may be down or load balancer disconnected."
+
+  # ── System Resources ──────────────────────────────────────────────────────────
+  - name: system.resources
+    interval: 30s
+    rules:
+
+      - alert: HighCpuUsage
+        expr: system_cpu_usage_percent > 85
+        for: 2m
+        labels:
+          severity: warning
+        annotations:
+          summary:     "CPU at {{ $value | printf \"%.1f\" }}%"
+          description: "Sustained high CPU may indicate a tight loop, regex backtracking, or under-provisioning."
+
+      - alert: CriticalCpuUsage
+        expr: system_cpu_usage_percent > 95
+        for: 1m
+        labels:
+          severity: critical
+          team:     on-call
+        annotations:
+          summary:     "CPU critical: {{ $value | printf \"%.1f\" }}%"
+          description: "CPU at {{ $value | printf \"%.1f\" }}%. Immediate investigation required."
+
+      - alert: HighMemoryUsage
+        expr: system_memory_used_mb > 700
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary:     "Memory at {{ $value | printf \"%.0f\" }}MB"
+          description: "Memory growing. Check /dashboard/gc for Gen2 collection frequency."
+
+      - alert: PossibleMemoryLeak
+        expr: |
+          (
+            system_memory_used_mb
+            - system_memory_used_mb offset 30m
+          ) > 100
+        for: 10m
+        labels:
+          severity: warning
+          team:     backend
+        annotations:
+          summary:     "Memory grew {{ $value | printf \"%.0f\" }}MB in 30 minutes"
+          description: >
+            Possible memory leak detected. Memory grew {{ $value | printf "%.0f" }}MB
+            in 30 minutes. Run soak test and watch GC Gen2 collections.
+
+  # ── GC Pressure ───────────────────────────────────────────────────────────────
+  - name: dotnet.gc
+    interval: 30s
+    rules:
+
+      - alert: FrequentGen2Collections
+        expr: |
+          rate(
+            process_runtime_dotnet_gc_collections_total{generation="gen2"}[5m]
+          ) > 0.1
+        for: 5m
+        labels:
+          severity: warning
+          team:     backend
+        annotations:
+          summary:     "High Gen2 GC frequency"
+          description: >
+            Gen2 GC running {{ $value | printf "%.2f" }} times/sec.
+            Possible large object allocation or LOH fragmentation.
+            Check /dashboard/gc for details.
+
+  # ── Slow Requests ─────────────────────────────────────────────────────────────
+  - name: api.slow_requests
+    interval: 30s
+    rules:
+
+      - alert: SlowRequestsElevated
+        expr: rate(app_requests_slow[5m]) > 0.5
+        for: 2m
+        labels:
+          severity: warning
+        annotations:
+          summary:     "{{ $value | printf \"%.2f\" }} slow requests/sec"
+          description: "More than 0.5 slow requests per second. Check /dashboard and DB query plans."

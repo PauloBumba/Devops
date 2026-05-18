@@ -1,0 +1,73 @@
+# docker/otel-config.yaml
+# OpenTelemetry Collector — receives from app, exports to Prometheus & Jaeger
+
+receivers:
+  otlp:
+    protocols:
+      grpc:
+        endpoint: 0.0.0.0:4317
+      http:
+        endpoint: 0.0.0.0:4318
+
+  # Scrape collector's own metrics
+  prometheus:
+    config:
+      scrape_configs:
+        - job_name: 'otel-collector'
+          scrape_interval: 10s
+          static_configs:
+            - targets: ['localhost:8888']
+
+processors:
+  batch:
+    timeout: 5s
+    send_batch_size: 512
+
+  memory_limiter:
+    check_interval: 1s
+    limit_mib: 512
+    spike_limit_mib: 128
+
+  resourcedetection:
+    detectors: [env, system]
+    timeout: 2s
+
+  attributes:
+    actions:
+      - key: environment
+        value: development
+        action: upsert
+
+exporters:
+  # Metrics → Prometheus (scraped by Prometheus)
+  prometheus:
+    endpoint: "0.0.0.0:8889"
+    namespace: "otel"
+
+  # Traces → Jaeger
+  otlp/jaeger:
+    endpoint: jaeger:14250
+    tls:
+      insecure: true
+
+  # Debug output (dev only)
+  debug:
+    verbosity: detailed
+    sampling_initial: 5
+    sampling_thereafter: 100
+
+service:
+  pipelines:
+    traces:
+      receivers:  [otlp]
+      processors: [memory_limiter, batch, resourcedetection]
+      exporters:  [otlp/jaeger, debug]
+
+    metrics:
+      receivers:  [otlp, prometheus]
+      processors: [memory_limiter, batch]
+      exporters:  [prometheus]
+
+  telemetry:
+    logs:
+      level: warn

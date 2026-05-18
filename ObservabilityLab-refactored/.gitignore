@@ -1,0 +1,47 @@
+# ── .NET ──────────────────────────────────────────────────────────────────────
+bin/
+obj/
+*.user
+*.suo
+.vs/
+.vscode/settings.json
+*.DotSettings.user
+launchSettings.json
+
+# ── Logs ──────────────────────────────────────────────────────────────────────
+logs/
+*.log
+
+# ── Test results ──────────────────────────────────────────────────────────────
+loadtests/results/
+!loadtests/results/.gitkeep
+
+# ── Docker volumes ────────────────────────────────────────────────────────────
+postgres_data/
+grafana_data/
+prometheus_data/
+
+# ── Secrets / Keys ────────────────────────────────────────────────────────────
+appsettings.Production.json
+appsettings.Staging.json
+*.pfx
+*.p12
+.env
+.env.*
+!.env.example
+
+# ── Node (k6 dependencies if using npm) ───────────────────────────────────────
+node_modules/
+package-lock.json
+
+# ── OS ────────────────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ── Rider ─────────────────────────────────────────────────────────────────────
+.idea/
+
+# ── NuGet ─────────────────────────────────────────────────────────────────────
+*.nupkg
+.nuget/

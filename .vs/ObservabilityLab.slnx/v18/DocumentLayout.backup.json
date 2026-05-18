@@ -1,0 +1,85 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\paulo\\OneDrive\\Desktop\\Devops\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{705E2266-078C-B861-F023-C3C1A0326742}|src\\Api\\ObservabilityLab.Api.csproj|c:\\users\\paulo\\onedrive\\desktop\\devops\\src\\api\\backgroundservices\\backgroundservices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{705E2266-078C-B861-F023-C3C1A0326742}|src\\Api\\ObservabilityLab.Api.csproj|solutionrelative:src\\api\\backgroundservices\\backgroundservices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AB72E8A8-25A3-6D9D-B9A8-81CC50108B03}|src\\Application\\ObservabilityLab.Application.csproj|c:\\users\\paulo\\onedrive\\desktop\\devops\\src\\application\\observabilitylab.application.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{AB72E8A8-25A3-6D9D-B9A8-81CC50108B03}|src\\Application\\ObservabilityLab.Application.csproj|solutionrelative:src\\application\\observabilitylab.application.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{705E2266-078C-B861-F023-C3C1A0326742}|src\\Api\\ObservabilityLab.Api.csproj|c:\\users\\paulo\\onedrive\\desktop\\devops\\src\\api\\observabilitylab.api.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{705E2266-078C-B861-F023-C3C1A0326742}|src\\Api\\ObservabilityLab.Api.csproj|solutionrelative:src\\api\\observabilitylab.api.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": -1,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:1:0:{d212f56b-c48a-434c-a121-1c5d80b59b9f}"
+            }
+          ]
+        },
+        {
+          "DockedWidth": 311,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "BackgroundServices.cs",
+              "DocumentMoniker": "C:\\Users\\paulo\\OneDrive\\Desktop\\Devops\\src\\Api\\BackgroundServices\\BackgroundServices.cs",
+              "RelativeDocumentMoniker": "src\\Api\\BackgroundServices\\BackgroundServices.cs",
+              "ToolTip": "C:\\Users\\paulo\\OneDrive\\Desktop\\Devops\\src\\Api\\BackgroundServices\\BackgroundServices.cs*",
+              "RelativeToolTip": "src\\Api\\BackgroundServices\\BackgroundServices.cs*",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-17T17:55:12.436Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "ObservabilityLab.Application",
+              "DocumentMoniker": "C:\\Users\\paulo\\OneDrive\\Desktop\\Devops\\src\\Application\\ObservabilityLab.Application.csproj",
+              "RelativeDocumentMoniker": "src\\Application\\ObservabilityLab.Application.csproj",
+              "ToolTip": "C:\\Users\\paulo\\OneDrive\\Desktop\\Devops\\src\\Application\\ObservabilityLab.Application.csproj",
+              "RelativeToolTip": "src\\Application\\ObservabilityLab.Application.csproj",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2026-05-17T17:55:01.927Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "ObservabilityLab.Api",
+              "DocumentMoniker": "C:\\Users\\paulo\\OneDrive\\Desktop\\Devops\\src\\Api\\ObservabilityLab.Api.csproj",
+              "RelativeDocumentMoniker": "src\\Api\\ObservabilityLab.Api.csproj",
+              "ToolTip": "C:\\Users\\paulo\\OneDrive\\Desktop\\Devops\\src\\Api\\ObservabilityLab.Api.csproj",
+              "RelativeToolTip": "src\\Api\\ObservabilityLab.Api.csproj",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2026-05-17T17:54:32.652Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{34e76e81-ee4a-11d0-ae2e-00a0c90fffc3}"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

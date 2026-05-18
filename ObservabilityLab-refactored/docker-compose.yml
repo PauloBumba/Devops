@@ -1,0 +1,188 @@
+version: '3.9'
+
+# ─── Observability Lab — Full Stack ──────────────────────────────────────────
+# Services:
+#   api           — ASP.NET Core Minimal API
+#   postgres      — Primary database
+#   redis         — Cache layer
+#   otelcollector — OpenTelemetry Collector (receives OTLP, exports to Prometheus/Jaeger)
+#   prometheus    — Metrics storage & scraping
+#   grafana       — Dashboards
+#   jaeger        — Distributed tracing UI
+#   k6            — Load test runner (profile: loadtest)
+#
+# Usage:
+#   docker compose up -d                          # Start everything
+#   docker compose --profile loadtest up k6       # Run load test
+#   docker compose logs -f api                    # Tail API logs
+
+networks:
+  observability:
+    driver: bridge
+
+volumes:
+  postgres_data:
+  prometheus_data:
+  grafana_data:
+
+services:
+
+  # ── ASP.NET Core API ────────────────────────────────────────────────────────
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: observabilitylab-api
+    ports:
+      - "8080:8080"
+      - "8443:8443"
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: "http://+:8080"
+      ConnectionStrings__DefaultConnection: >
+        Host=postgres;Port=5432;Database=observabilitylab;
+        Username=lab;Password=lab_secret;Include Error Detail=true
+      ConnectionStrings__Redis: "redis:6379"
+      Otel__Endpoint: "http://otelcollector:4317"
+      Observability__SlowRequestThresholdMs: "500"
+      Alerting__TelegramEnabled: "false"
+      Alerting__WhatsAppEnabled: "false"
+      Alerting__EmailEnabled: "false"
+      Alerting__Thresholds__CpuCritical: "90"
+      Alerting__Thresholds__ErrorRate: "5"
+      Alerting__Thresholds__AvgLatencyMs: "800"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      otelcollector:
+        condition: service_started
+    networks:
+      - observability
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health/live"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ── PostgreSQL ───────────────────────────────────────────────────────────────
+  postgres:
+    image: postgres:16-alpine
+    container_name: observabilitylab-postgres
+    environment:
+      POSTGRES_DB:       observabilitylab
+      POSTGRES_USER:     lab
+      POSTGRES_PASSWORD: lab_secret
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - observability
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U lab -d observabilitylab"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  # ── Redis ────────────────────────────────────────────────────────────────────
+  redis:
+    image: redis:7-alpine
+    container_name: observabilitylab-redis
+    command: redis-server --maxmemory 256mb --maxmemory-policy allkeys-lru --save ""
+    ports:
+      - "6379:6379"
+    networks:
+      - observability
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  # ── OpenTelemetry Collector ──────────────────────────────────────────────────
+  otelcollector:
+    image: otel/opentelemetry-collector-contrib:latest
+    container_name: observabilitylab-otel
+    command: ["--config=/etc/otel/config.yaml"]
+    volumes:
+      - ./docker/otel-config.yaml:/etc/otel/config.yaml:ro
+    ports:
+      - "4317:4317"   # OTLP gRPC
+      - "4318:4318"   # OTLP HTTP
+      - "8888:8888"   # OTel collector metrics
+    networks:
+      - observability
+    restart: unless-stopped
+
+  # ── Prometheus ───────────────────────────────────────────────────────────────
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: observabilitylab-prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--storage.tsdb.retention.time=30d'
+      - '--web.enable-lifecycle'
+      - '--web.enable-admin-api'
+    volumes:
+      - ./docker/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus_data:/prometheus
+    ports:
+      - "9090:9090"
+    networks:
+      - observability
+    restart: unless-stopped
+
+  # ── Grafana ──────────────────────────────────────────────────────────────────
+  grafana:
+    image: grafana/grafana:latest
+    container_name: observabilitylab-grafana
+    environment:
+      GF_SECURITY_ADMIN_USER:     admin
+      GF_SECURITY_ADMIN_PASSWORD: observability
+      GF_USERS_ALLOW_SIGN_UP:     "false"
+      GF_INSTALL_PLUGINS:         "grafana-piechart-panel"
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./docker/grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./docker/grafana/dashboards:/var/lib/grafana/dashboards:ro
+    ports:
+      - "3000:3000"
+    depends_on:
+      - prometheus
+    networks:
+      - observability
+    restart: unless-stopped
+
+  # ── Jaeger (Distributed Tracing UI) ──────────────────────────────────────────
+  jaeger:
+    image: jaegertracing/all-in-one:latest
+    container_name: observabilitylab-jaeger
+    environment:
+      COLLECTOR_OTLP_ENABLED: "true"
+    ports:
+      - "16686:16686"  # Jaeger UI
+      - "14250:14250"  # gRPC
+    networks:
+      - observability
+    restart: unless-stopped
+
+  # ── k6 Load Tester (run with: docker compose --profile loadtest up k6) ───────
+  k6:
+    image: grafana/k6:latest
+    container_name: observabilitylab-k6
+    profiles: ["loadtest"]
+    command: run /loadtests/${K6_SCRIPT:-scripts/load-test.js}
+    volumes:
+      - ./loadtests:/loadtests:ro
+    environment:
+      BASE_URL: "http://api:8080"
+      K6_OUT:   "json=/loadtests/results/run-${K6_SCRIPT:-load}.json"
+    depends_on:
+      api:
+        condition: service_healthy
+    networks:
+      - observability

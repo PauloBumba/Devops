@@ -1,0 +1,14 @@
+# docker/grafana/provisioning/dashboards/dashboards.yml
+
+apiVersion: 1
+
+providers:
+  - name:            ObservabilityLab
+    orgId:           1
+    type:            file
+    disableDeletion: false
+    updateIntervalSeconds: 30
+    allowUiUpdates: true
+    options:
+      path:      /var/lib/grafana/dashboards
+      foldersFromFilesStructure: true
