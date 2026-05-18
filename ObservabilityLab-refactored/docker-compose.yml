@@ -28,46 +28,7 @@ volumes:
 services:
 
   # ── ASP.NET Core API ────────────────────────────────────────────────────────
-  api:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: observabilitylab-api
-    ports:
-      - "8080:8080"
-      - "8443:8443"
-    environment:
-      ASPNETCORE_ENVIRONMENT: Development
-      ASPNETCORE_URLS: "http://+:8080"
-      ConnectionStrings__DefaultConnection: >
-        Host=postgres;Port=5432;Database=observabilitylab;
-        Username=lab;Password=lab_secret;Include Error Detail=true
-      ConnectionStrings__Redis: "redis:6379"
-      Otel__Endpoint: "http://otelcollector:4317"
-      Observability__SlowRequestThresholdMs: "500"
-      Alerting__TelegramEnabled: "false"
-      Alerting__WhatsAppEnabled: "false"
-      Alerting__EmailEnabled: "false"
-      Alerting__Thresholds__CpuCritical: "90"
-      Alerting__Thresholds__ErrorRate: "5"
-      Alerting__Thresholds__AvgLatencyMs: "800"
-    depends_on:
-      postgres:
-        condition: service_healthy
-      redis:
-        condition: service_healthy
-      otelcollector:
-        condition: service_started
-    networks:
-      - observability
-    restart: unless-stopped
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8080/health/live"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-
-  # ── PostgreSQL ───────────────────────────────────────────────────────────────
+    # ── PostgreSQL ───────────────────────────────────────────────────────────────
   postgres:
     image: postgres:16-alpine
     container_name: observabilitylab-postgres

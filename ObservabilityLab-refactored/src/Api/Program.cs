@@ -14,6 +14,7 @@ using ObservabilityLab.Infrastructure.Health;
 using ObservabilityLab.Observability;
 using ObservabilityLab.Observability.Dashboard;
 using ObservabilityLab.Observability.Metrics;
+using Microsoft.EntityFrameworkCore;
 
 // ─── Serilog Bootstrap ────────────────────────────────────────────────────────
 Log.Logger = new LoggerConfiguration()
@@ -57,7 +58,7 @@ if (app.Environment.IsDevelopment())
 app.UseCors();
 
 app.UseSerilogRequestLogging(opts =>
-1{
+{
     opts.EnrichDiagnosticContext = (diag, ctx) =>
     {
         diag.Set("UserAgent", ctx.Request.Headers.UserAgent.ToString());

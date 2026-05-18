@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using ObservabilityLab.Observability.Dashboard;
 using ObservabilityLab.Observability.Metrics;
 
 namespace ObservabilityLab.Api.BackgroundServices;
@@ -10,7 +11,7 @@ namespace ObservabilityLab.Api.BackgroundServices;
 /// Responsabilidade única: coleta periódica de métricas do processo.
 /// </summary>
 public sealed class SystemMetricsCollectorService(
-    DashboardState                          dashboard,
+    DashboardState                        dashboard,
     AppMetrics                              metrics,
     ILogger<SystemMetricsCollectorService>  logger) : BackgroundService
 {

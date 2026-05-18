@@ -1,3 +1,4 @@
+using ObservabilityLab.Observability.Dashboard;
 using ObservabilityLab.Observability.Metrics;
 
 namespace ObservabilityLab.Api.Middleware;

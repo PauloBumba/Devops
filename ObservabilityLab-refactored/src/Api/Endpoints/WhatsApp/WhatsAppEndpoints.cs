@@ -1,7 +1,6 @@
 using MediatR;
 using ObservabilityLab.Application.Features.WhatsApp.CreateInstance;
-using ObservabilityLab.Application.Features.WhatsApp.DisconnectInstance;
-using ObservabilityLab.Application.Features.WhatsApp.GetQrCode;
+
 using ObservabilityLab.Application.Features.WhatsApp.SendMediaMessage;
 using ObservabilityLab.Application.Features.WhatsApp.SendTextMessage;
 
