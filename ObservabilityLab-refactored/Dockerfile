@@ -11,7 +11,9 @@ COPY ["src/Alerting/ObservabilityLab.Alerting.csproj",           "src/Alerting/"
 COPY ["src/BuildingBlocks/ObservabilityLab.BuildingBlocks.csproj","src/BuildingBlocks/"]
 COPY ["src/Domain/ObservabilityLab.Domain.csproj",               "src/Domain/"]
 
-RUN dotnet restore "src/Api/ObservabilityLab.Api.csproj"
+# Restore limpando fallback folders do Windows (evita erro de path no Linux)
+RUN dotnet restore "src/Api/ObservabilityLab.Api.csproj" \
+    /p:RestoreFallbackFolders=""
 
 # Copy source
 COPY src/ src/
@@ -21,8 +23,8 @@ WORKDIR /src/src/Api
 RUN dotnet publish "ObservabilityLab.Api.csproj" \
     -c Release \
     -o /app/publish \
-    --no-restore \
-    /p:UseAppHost=false
+    /p:UseAppHost=false \
+    /p:RestoreFallbackFolders=""
 
 # ─── Runtime stage ────────────────────────────────────────────────────────────
 FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS runtime

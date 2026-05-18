@@ -45,16 +45,16 @@ builder.Services
 var app = builder.Build();
 
 // ─── Pipeline HTTP ────────────────────────────────────────────────────────────
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
+app.UseSwagger();
 
-    app.UseSwaggerUI(opts =>
-    {
-        opts.SwaggerEndpoint("/swagger/v1/swagger.json", "ObservabilityLab v1");
-        opts.RoutePrefix = "docs";
-    });
-}
+app.UseSwaggerUI(opts =>
+{
+    opts.SwaggerEndpoint("/swagger/v1/swagger.json", "ObservabilityLab v1");
+    opts.RoutePrefix = "docs";
+});
+
+// Redireciona a raiz para o Swagger UI
+app.MapGet("/", () => Results.Redirect("/docs")).ExcludeFromDescription();
 
 app.UseCors();
 

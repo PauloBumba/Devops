@@ -1,0 +1,28 @@
+## Build artifacts — evita copiar obj/bin do Windows para o Linux
+**/obj/
+**/bin/
+
+## Visual Studio
+.vs/
+*.user
+*.suo
+
+## Logs locais
+logs/
+*.log
+
+## Resultados de testes de carga
+loadtests/results/
+
+## Git
+.git/
+.gitignore
+
+## Docker
+docker-compose*.yml
+Dockerfile
+.dockerignore
+
+## README e docs
+README.md
+Makefile
